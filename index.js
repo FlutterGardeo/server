@@ -3,7 +3,7 @@ require("./db/mongoose")
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const deviceRouter = require("./routes/device")
-// const taskRouter = require("./routes/task")
+const serviceRouter = require("./routes/service")
 
 
 
@@ -13,6 +13,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(deviceRouter)
+app.use(serviceRouter)
 // app.use(taskRouter)
 
 const port = 3000;
