@@ -5,6 +5,9 @@ const cors = require("cors");
 const deviceRouter = require("./routes/device")
 // const taskRouter = require("./routes/task")
 
+
+
+
 const app = express();
 
 app.use(cors());

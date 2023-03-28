@@ -1,4 +1,5 @@
 const express = require("express");
+const auth = require("../middleware/auth");
 const Device = require("../models/device");
 
 const router = express.Router();
@@ -16,7 +17,7 @@ router.post("/device", async (req, res) => {
     }
 });
 
-router.get("/device", async (req, res) => {
+router.get("/device",auth, async (req, res) => {
 
     try {
         const devices = await Device.find({})
