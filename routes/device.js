@@ -22,7 +22,7 @@ router.get("/device",auth, async (req, res) => {
     try {
         const devices = await Device.find({})
 
-        res.status(201).send(devices);
+        res.status(200).send(devices);
     } catch (e) {
         res.status(400).send(e);
     }

@@ -21,7 +21,7 @@ router.get("/service", async (req, res) => {
     try {
         const services = await Service.find({})
 
-        res.status(201).send(services);
+        res.status(200).send(services);
     } catch (e) {
         res.status(400).send(e);
     }
