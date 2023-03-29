@@ -5,9 +5,8 @@ const Schema = mongoose.Schema;
 const cartSchema = new mongoose.Schema(
   {
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       required: true,
-      ref: "User",
     },
     // price: {
     //   type: Number,
@@ -18,23 +17,21 @@ const cartSchema = new mongoose.Schema(
     //   required: true,
     //   trim: true,
     // },
-    devices: [
-      {
-        item: {
+    devices: [{
           type: mongoose.Schema.Types.ObjectId,
-          required: true,
+          
           ref: "Device",
         }
-      }
+      
     ], services: [
-      {
-        item: {
+       {
           type: mongoose.Schema.Types.ObjectId,
-          required: true,
+          
           ref: "Service",
         }
-      }
+      
     ],
+  
   },
   { timestamps: true }
 );

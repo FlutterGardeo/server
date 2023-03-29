@@ -4,72 +4,68 @@ const Service = require("../models/service");
 
 const router = express.Router();
 
-router.post("/add", async (req, res) => {
+router.post("/add/:itemId", async (req, res) => {
   const userId = req.body.userId;
+  const itemId = req.params.itemId;
   //body should caontain where this is device or a service
   const itemType = req.body.itemType
-  const cart = await Cart.findOne({ user: userId })
-
-  if (!cart) {
-    const cart = new Cart({ user: userId, devices: [], services: [] })
-
-    if(itemType=="device"){
-      
-    }
-  }
-  const service = new Service({
-    ...req.body,
-  });
 
   try {
-    await service.save();
-    res.status(201).send(service);
-  } catch (e) {
-    res.status(400).send(e);
+    const cart = await Cart.findOne({ user: userId })
+
+    if (!cart) {
+      const newcart = new Cart({ user: userId, devices: [], services: [] })
+
+      if (itemType == "device") {
+        newcart.devices.push(itemId)
+      } else {
+        newcart.services.push(itemId)
+      }
+      await newcart.save();
+      res.status(200).send(newcart);
+    } else {
+      if (itemType == "device") {
+        cart.devices.push(itemId)
+      } else {
+        cart.services.push(itemId)
+      }
+      await cart.save();
+      res.status(200).send(cart);
+    }
+
+  } catch (error) {
+    res.status(400).send(error);
   }
+
 });
 
-// router.get("/service", async (req, res) => {
+router.get("/cart/devices", async (req, res) => {
+  const userId = req.body.userId;
+    try {
+        const cart = await Cart.findOne({user:userId})
+        .populate({
+          path: "devices",
+        })
 
-//     try {
-//         const services = await Service.find({})
+        res.status(200).send(cart);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+});
 
-//         res.status(200).send(services);
-//     } catch (e) {
-//         res.status(400).send(e);
-//     }
-// });
+router.get("/cart/services", async (req, res) => {
+  const userId = req.body.userId;
+    try {
+        const cart = await Cart.findOne({user:userId})
+        .populate({
+          path: "services",
+        })
 
-// router.patch("/service/:id", async (req, res) => {
-//     const _id = req.params.id;
-//     try {
-//       const updatedService = await Service.findByIdAndUpdate(_id, req.body, {
-//         new: true,
-//       });
+        res.status(200).send(cart);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+});
 
-//       if (!updatedService) {
-//         return res.status(404).send();
-//       }
-//       res.status(200).send(updatedService);
-//     } catch (error) {
-//       res.status(400).send(error);
-//     }
-//   });
-
-//   router.delete("/service/:id", async (req, res) => {
-//     const _id = req.params.id;
-
-//     try {
-//       const deletedService = await Service.findByIdAndDelete(_id);
-
-//       if (!deletedService) {
-//         return res.status(404).send();
-//       }
-
-//       return res.status(200).send(deletedService);
-//     } catch (error) {
-//       res.status(400).send(error);
-//     }
-//   });
 
 module.exports = router;
