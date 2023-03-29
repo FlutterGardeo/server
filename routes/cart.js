@@ -4,9 +4,9 @@ const Service = require("../models/service");
 
 const router = express.Router();
 
-router.post("/add/:itemId", async (req, res) => {
+router.post("/add", async (req, res) => {
   const userId = req.body.userId;
-  const itemId = req.params.itemId;
+  const itemId = req.body.itemId;
   //body should caontain where this is device or a service
   const itemType = req.body.itemType
 
@@ -39,32 +39,61 @@ router.post("/add/:itemId", async (req, res) => {
 
 });
 
+router.post("/remove", async (req, res) => {
+  const userId = req.body.userId;
+  const itemId = req.body.itemId;
+  //body should caontain where this is device or a service
+  const itemType = req.body.itemType
+  console.log(itemId)
+  try {
+    const cart = await Cart.findOne({ user: userId })
+
+    if (!cart) {
+      res.status(400).send(error);
+    } else {
+      if (itemType == "device") {
+        cart.devices = cart.devices.filter((device) =>
+          device != itemId
+        )
+      } else {
+        cart.services = cart.services.filter((service) => service != itemId)
+      }
+      await cart.save();
+      res.status(200).send(cart);
+    }
+
+  } catch (error) {
+    res.status(400).send(error);
+  }
+
+});
+
 router.get("/cart/devices", async (req, res) => {
   const userId = req.body.userId;
-    try {
-        const cart = await Cart.findOne({user:userId})
-        .populate({
-          path: "devices",
-        })
+  try {
+    const cart = await Cart.findOne({ user: userId })
+      .populate({
+        path: "devices",
+      })
 
-        res.status(200).send(cart);
-    } catch (e) {
-        res.status(400).send(e);
-    }
+    res.status(200).send(cart);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 router.get("/cart/services", async (req, res) => {
   const userId = req.body.userId;
-    try {
-        const cart = await Cart.findOne({user:userId})
-        .populate({
-          path: "services",
-        })
+  try {
+    const cart = await Cart.findOne({ user: userId })
+      .populate({
+        path: "services",
+      })
 
-        res.status(200).send(cart);
-    } catch (e) {
-        res.status(400).send(e);
-    }
+    res.status(200).send(cart);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 

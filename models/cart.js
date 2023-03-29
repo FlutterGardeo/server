@@ -19,14 +19,14 @@ const cartSchema = new mongoose.Schema(
     // },
     devices: [{
           type: mongoose.Schema.Types.ObjectId,
-          
+          unique:true,
           ref: "Device",
         }
       
     ], services: [
        {
           type: mongoose.Schema.Types.ObjectId,
-          
+          unique:true,
           ref: "Service",
         }
       
