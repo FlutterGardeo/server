@@ -17,7 +17,7 @@ router.post("/device", async (req, res) => {
     }
 });
 
-router.get("/device",auth, async (req, res) => {
+router.get("/device", async (req, res) => {
 
     try {
         const devices = await Device.find({})
