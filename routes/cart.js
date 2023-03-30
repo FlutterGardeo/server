@@ -1,11 +1,12 @@
 const express = require("express");
+const auth = require("../middleware/auth");
 const Cart = require("../models/cart");
 const Service = require("../models/service");
 
 const router = express.Router();
 
-router.post("/add", async (req, res) => {
-  const userId = req.body.userId;
+router.post("/add",auth, async (req, res) => {
+  const userId = req.userId;
   const itemId = req.body.itemId;
   //body should caontain where this is device or a service
   const itemType = req.body.itemType
@@ -39,8 +40,8 @@ router.post("/add", async (req, res) => {
 
 });
 
-router.post("/remove", async (req, res) => {
-  const userId = req.body.userId;
+router.post("/remove",auth, async (req, res) => {
+  const userId = req.userId;
   const itemId = req.body.itemId;
   //body should caontain where this is device or a service
   const itemType = req.body.itemType
@@ -68,22 +69,21 @@ router.post("/remove", async (req, res) => {
 
 });
 
-router.get("/cart/devices", async (req, res) => {
-  const userId = req.body.userId;
+router.get("/cart/devices",auth, async (req, res) => {
+  const userId = req.userId;
   try {
-    const cart = await Cart.findOne({ user: userId })
-      .populate({
-        path: "devices",
-      })
+    const cart = await Cart.find({ user: userId }).populate("devices")
+    console.log(cart)
 
     res.status(200).send(cart);
   } catch (e) {
+    console.log(e)
     res.status(400).send(e);
   }
 });
 
-router.get("/cart/services", async (req, res) => {
-  const userId = req.body.userId;
+router.get("/cart/services",auth, async (req, res) => {
+  const userId = req.userId;
   try {
     const cart = await Cart.findOne({ user: userId })
       .populate({
