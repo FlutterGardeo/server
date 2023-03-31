@@ -4,7 +4,7 @@ const Device = require("../models/device");
 
 const router = express.Router();
 
-router.post("/device", async (req, res) => {
+router.post("/device",auth, async (req, res) => {
     const device = new Device({
         ...req.body,
     });
@@ -28,7 +28,7 @@ router.get("/device", async (req, res) => {
     }
 });
 
-router.patch("/device/:id", async (req, res) => {
+router.patch("/device/:id",auth, async (req, res) => {
     const _id = req.params.id;
     try {
       const updatedDevice = await Device.findByIdAndUpdate(_id, req.body, {
@@ -44,7 +44,7 @@ router.patch("/device/:id", async (req, res) => {
     }
   });
 
-  router.delete("/device/:id", async (req, res) => {
+  router.delete("/device/:id",auth, async (req, res) => {
     const _id = req.params.id;
 
     try {
