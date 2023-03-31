@@ -5,9 +5,7 @@ const cors = require("cors");
 const deviceRouter = require("./routes/device")
 const serviceRouter = require("./routes/service")
 const cartRouter = require("./routes/cart")
-
-
-
+const tierRouter = require("./routes/tier")
 
 const app = express();
 
@@ -16,6 +14,7 @@ app.use(bodyParser.json());
 app.use(deviceRouter)
 app.use(serviceRouter)
 app.use(cartRouter)
+app.use(tierRouter)
 // app.use(taskRouter)
 
 const port = 3000;
