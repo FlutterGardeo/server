@@ -5,9 +5,9 @@ const Service = require("../models/service");
 
 const router = express.Router();
 
-router.post("/checkout",async (req, res) => {
+router.post("/checkout",auth,async (req, res) => {
   console.log('received checkout request');
-  const userId = req.body.userId;
+  const userId = req.userId;
   const total = req.body.total;
 
   try {
