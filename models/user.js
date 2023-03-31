@@ -10,11 +10,9 @@ const userSchema = new mongoose.Schema(
     },
     tierPoints: {
       type: Number,
-      required: true,
     },
     currentTier: {
       type: String,
-      required: true,
       default: ""
     },
   },
